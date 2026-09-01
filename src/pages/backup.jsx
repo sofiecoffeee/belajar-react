@@ -1,0 +1,48 @@
+// backup materi belajar react
+
+// const [count, setCount] = useState(0);
+//   const tambah = () => setCount(count + 1);
+//   const kurang = () => setCount(count - 1);
+//   const reset = () => setCount(0);
+//   const [students, setStudents] = useState([
+//     // { id: 1, name: "Budi Sudarsono", jurusan: "Content Creator", usia: 35 },
+//     // { id: 2, name: "Rina The Dragon", jurusan: "MUA", usia: 35 },
+//   ]);
+
+//   // console.log(students);
+//   const handleTambahSiswa = (newStudent) => {
+//     setStudents([...students, newStudent]);
+//   };
+
+//   return (
+//     // <div>
+//     //   {/* <DataSiswa name="Hello Shine" usia="19" jurusan="Junior web programmer" />
+//     //   <DataSiswa name="Budi Sudarsono" usia="35" jurusan="Content Creator" />
+//     //   <DataSiswa name="Rina The Dragon" usia="35" jurusan="MUA" /> */}
+
+//     //   {/* <button onClick={tambah}>+ Tambah</button><br></br>
+//     //   {count}<br></br>
+//     //   <button onClick={kurang}>- Kurang</button><br></br>
+//     //   <button onClick={reset}>Reset</button><br></br> */}
+//     // </div>
+
+//     <div className="container">
+//       <header>
+//         <h1>Data Siswa PPKD Jakpus</h1>
+//       </header>
+//       <FormSiswa tambahSiswa={handleTambahSiswa} />
+
+//       <section className="student-list">
+//         <div className="student-grid">
+//           {students.map((student) => (
+//             <DataSiswa
+//               key={student.id}
+//               name={student.name}
+//               usia={student.usia}
+//               jurusan={student.jurusan}
+//             />
+//           ))}
+//         </div>
+//       </section>
+//     </div>
+//   );
