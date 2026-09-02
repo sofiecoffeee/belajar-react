@@ -8,7 +8,16 @@ import {
   Button,
 } from "react-bootstrap";
 
+import UserModal from "../components/UserModal";
+import { useState } from "react";
+
 const User = () => {
+  const [show, setShow] = useState(false);
+  const handleCloseModal = () => setShow(false);
+  const handleShow = () => {
+    setShow(true);
+  };
+
   return (
     <Container className="py-4">
       <Card className="shadow-sm border-0">
@@ -16,33 +25,37 @@ const User = () => {
           <Row className="mb-4 align-items-center">
             <Col>
               User Management
-              <p ClassName="text-muted mb-0">Data User Management</p>
+              <p className="text-muted mb-0">Data User Management</p>
             </Col>
 
             <Col xs="auto">
-              <Button variant="primary">+ Create New User</Button>
+              <Button variant="primary" onClick={handleShow}>
+                + Create New User
+              </Button>
+              <UserModal show={show} handleClose={handleCloseModal} />
             </Col>
           </Row>
 
-          <Table responsive hover bordered className="align-middle"></Table>
-          <thead>
-            <tr>
-              <th>No</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
+          <Table responsive hover bordered className="align-middle">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
                 <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
-            </tr>
-          </tbody>
+              </tr>
+            </tbody>
+          </Table>
         </Card.Body>
       </Card>
     </Container>
