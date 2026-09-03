@@ -10,6 +10,7 @@ import {
 
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import api from "../services/api";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -22,38 +23,48 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setError(""); // Riset pesan error tiap kali submit ulang
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({ email, password }),
+      const res = await api.post("/login", {
+        email,
+        password,
       });
 
-      const data = await response.json();
-      if (response.ok) {
-        localStorage.setItem("token", data.token);
+      // Karena di interceptor udah dikembaliin `response.data`,
+      // di sini tinggal panggil propertinya langsung (misal: res.token atau res.access_token)
+      const token = res.token || res.access_token;
+
+      if (token) {
+        localStorage.setItem("token", token);
         navigate("/dashboard");
-      } else {
-        if (response.status === 422 && data.error) {
-          const firstKey = Object.keys(data.error)[0];
-          setError(data.error[firstKey][0]);
-        } else {
-          setError(data.message || "Email and Password Fail!");
-        }
-        return;
       }
     } catch (error) {
-      console.log(error);
-      setError("Server Error");
+      console.log(error.response);
+
+      if (error.response) {
+        // Catatan: error.response.data MASIH berisi response dari Axios bawaan saat error
+        if (error.response.status === 422 && error.response.data.error) {
+          const rawErrors = error.response.data.error;
+          const formatError = {};
+
+          Object.keys(rawErrors).forEach((key) => {
+            formatError[key] = rawErrors[key][0];
+          });
+
+          setError(formatError);
+        } else if (error.response.status === 401) {
+          setError("Email atau password salah.");
+        } else {
+          setError("Terjadi kesalahan pada server.");
+        }
+      } else {
+        setError("Gagal terhubung ke server.");
+      }
     } finally {
       setLoading(false);
     }
   };
-
   return (
     <Container
       className="d-flex justify-content-center align-items-center w-100"
@@ -64,8 +75,9 @@ const Login = () => {
           <Card className="shadow-sm border-0">
             <Card.Body className="p-4">
               <h3 className="text-center mb-4">Login Form</h3>
-
-              {error && <Alert variant="danger">{error}</Alert>}
+              {typeof error === "string" && error !== "" && (
+                <Alert variant="danger">{error}</Alert>
+              )}
               <Form onSubmit={handleLogin}>
                 <Form.Group className="mb-3">
                   <Form.Label>Email</Form.Label>
@@ -74,7 +86,11 @@ const Login = () => {
                     placeholder="Enter email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    isInvalid={!!error?.email}
                   />
+                  <Form.Control.Feedback type="invalid">
+                    {error?.email}
+                  </Form.Control.Feedback>
                 </Form.Group>
 
                 <Form.Group className="mb-3">
@@ -84,8 +100,13 @@ const Login = () => {
                     placeholder="Enter password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    isInvalid={!!error?.password}
                   />
+                  <Form.Control.Feedback type="invalid">
+                    {error?.password}
+                  </Form.Control.Feedback>
                 </Form.Group>
+
                 <Button
                   variant="primary"
                   type="submit"
