@@ -17,7 +17,7 @@ const UserForm = ({ formId, formData, setFormData, onSubmit, errors = {} }) => {
           type="text"
           name="name"
           placeholder="Enter name"
-          required
+          // required
           value={formData.name}
           onChange={handleChange}
         />
@@ -29,10 +29,11 @@ const UserForm = ({ formId, formData, setFormData, onSubmit, errors = {} }) => {
       <Form.Group className="mb-3">
         <Form.Label className="fw-semibold">Email</Form.Label>
         <Form.Control
+          isInvalid={!!errors.email}
           type="email"
           name="email"
           placeholder="Enter email"
-          required
+          // required
           value={formData.email}
           onChange={handleChange}
         />
@@ -44,10 +45,11 @@ const UserForm = ({ formId, formData, setFormData, onSubmit, errors = {} }) => {
       <Form.Group className="mb-3">
         <Form.Label className="fw-semibold">Password</Form.Label>
         <Form.Control
+          isInvalid={!!errors.password}
           type="password"
           name="password"
           placeholder="Enter password"
-          required
+          // required
           value={formData.password}
           onChange={handleChange}
         />
@@ -59,10 +61,11 @@ const UserForm = ({ formId, formData, setFormData, onSubmit, errors = {} }) => {
       <Form.Group className="mb-3">
         <Form.Label className="fw-semibold">Status</Form.Label>
         <Form.Select
+          isInvalid={!!errors.status}
           className="form-select"
           aria-label="Active"
           name="status"
-          required
+          // required
           value={formData.status}
           onChange={handleChange}
         >

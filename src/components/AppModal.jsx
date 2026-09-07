@@ -18,15 +18,19 @@ const AppModal = ({
         </Modal.Header>
         <Modal.Body>{children}</Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose} disable={isLoading}>
+          <Button
+            variant="secondary"
+            onClick={handleClose}
+            disabled={isLoading}
+          >
             Cancel
           </Button>
           <Button
             variant={variant}
             type="submit"
             form={formId}
-            onClick={handleClose}
-            disable={isLoading}
+            // onClick={handleClose}
+            disabled={isLoading}
           >
             {isLoading ? "Loading..." : submitText}
           </Button>

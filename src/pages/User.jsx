@@ -40,22 +40,24 @@ const User = () => {
 
   const handleCreate = () => {
     setIsEdit(false);
+    setFormData(initialForm);
+    setValidationError({});
     setShow(true);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("aaa");
+    // console.log("aaa");
 
     setSubmitLoading(true);
     try {
       const payload = { ...formData };
       const response = await api.post("/user", payload);
-      // setShow(false);
+      setShow(false);
       fetchUsers();
     } catch (error) {
       console.log("error", error);
-      alert("tess");
+      // alert("tess");
       if (error.response) {
         // Catatan: error.response.data MASIH berisi response dari Axios bawaan saat error
         if (error.response.status === 422 && error.response.data.errors) {
@@ -66,10 +68,11 @@ const User = () => {
             formatError[key] = rawErrors[key][0];
           });
 
-          // setValidationError(formatError);
+          setValidationError(formatError);
         } else {
           const errMsg =
             error.response?.data?.message || "Internal Server Error";
+          alert(errMsg);
         }
       }
     } finally {
